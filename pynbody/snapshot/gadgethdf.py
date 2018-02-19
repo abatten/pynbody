@@ -629,9 +629,14 @@ def HII(sim) :
 @GadgetHDFSnap.derived_quantity
 @SubFindHDFSnap.derived_quantity
 def HeIII(sim) :
-    """Number of HeIII ions per proton mass"""
-
-    return sim.g["hetot"] - sim.g["HeII"] - sim.g["HeI"]
+    """The fraction of HeIII ions to total He"""
+    try:
+        return sim.g["hetot"] - sim.g["apHeI"] - sim.g["apHeII"]
+    except Exception as e:
+        raise e
+    else:
+        print("Could not find ionisation data for He. Using CLOUDY lookup table")
+        return sim.g["hetot"] - sim.g["HeI"] - sim.g["HeII"]
 
 @GadgetHDFSnap.derived_quantity
 @SubFindHDFSnap.derived_quantity
@@ -743,7 +748,7 @@ def HI(sim) :
 @GadgetHDFSnap.derived_quantity
 @SubFindHDFSnap.derived_quantity
 def HIeos(sim) :
-    """Fraction of Neutral Hydrogen HI use limited CLOUDY table, assuming dense EoS gas is selfshielded"""
+    """Fraction of Neutral Hydrogen HI use limited CLOUDY table, assuming dense EoS gas is self-shielded"""
 
     import pynbody.analysis.hifrac
 
