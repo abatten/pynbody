@@ -629,14 +629,15 @@ def HII(sim) :
 @GadgetHDFSnap.derived_quantity
 @SubFindHDFSnap.derived_quantity
 def HeIII(sim) :
-    """The fraction of HeIII ions to total He"""
+    """Number fraction of HeIII (triply ionised helium) relative to total He"""
     try:
-        return sim.g["hetot"] - sim.g["apHeI"] - sim.g["apHeII"]
-    except Exception as e:
-        raise e
-    else:
-        print("Could not find ionisation data for He. Using CLOUDY lookup table")
-        return sim.g["hetot"] - sim.g["HeI"] - sim.g["HeII"]
+        # In Aurora, "apHeI" and "apHeII" are number fractions relative to total hydrogen
+        # i.e apHei -> nHeI/nH
+        # Also need to convert from mass fractions to number fraction to get total relative to He.
+        nH_nHe = 4 * (s.g["hydrogen"] / s.g["hetot"])
+        return 1 - nH_nHe * (sim.g["apHeI"] + sim.g["apHeII"])
+    except:
+        print("Could not find ionisation data for He.")
 
 @GadgetHDFSnap.derived_quantity
 @SubFindHDFSnap.derived_quantity
