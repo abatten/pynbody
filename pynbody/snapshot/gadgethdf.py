@@ -1,4 +1,4 @@
-"""
+`"""
 
 gadgethdf
 =========
@@ -539,7 +539,7 @@ def do_properties(sim):
         sim.properties['a'] = 1. / (1 + atr['Redshift'])
 
 
-    # not all omegas need to be specified in the attributes
+    # not all ome        need to be specified in the attributes
     try:
         sim.properties['omegaB0'] = atr['OmegaBaryon']
     except KeyError:
@@ -634,7 +634,7 @@ def HeIII(sim) :
         # In Aurora, "apHeI" and "apHeII" are number fractions relative to total hydrogen
         # i.e apHei -> nHeI/nH
         # Also need to convert from mass fractions to number fraction to get total relative to He.
-        nH_nHe = 4 * (s.g["hydrogen"] / s.g["hetot"])
+        nH_nHe = 4 * (sim.g["hydrogen"] / sim.g["hetot"])
         return 1 - nH_nHe * (sim.g["apHeI"] + sim.g["apHeII"])
     except:
         print("Could not find ionisation data for He.")
@@ -966,3 +966,5 @@ def sife(sim) :
     minfe = np.amin(sim['Fe'][np.where(sim['Fe'] > 0)])
     sim['Fe'][np.where(sim['Fe'] == 0)]=minfe
     return np.log10(sim['Si']/sim['Fe']) - np.log10(XSOLSi/XSOLFe)
+
+
